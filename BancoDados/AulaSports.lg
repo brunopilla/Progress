@@ -1,0 +1,39 @@
+
+                Wed May 24 08:10:42 2023
+[2023/05/24@08:10:42.469-0300] P-20160      T-21692 I DBUTIL   : (19399) Database with large file support enabled is being opened under sub-Enterprise license.  Large file support will be disabled. 
+[2023/05/24@08:10:42.469-0300] P-20160      T-21692 I DBUTIL   : (451)   prostrct create session begin for User on CON:. 
+[2023/05/24@08:10:42.470-0300] P-20160      T-21692 I DBUTIL   : (19399) Database with large file support enabled is being opened under sub-Enterprise license.  Large file support will be disabled. 
+[2023/05/24@08:10:42.471-0300] P-20160      T-21692 I DBUTIL   : (12862) Structure file C:\Users\User\Documents\AulasProgres\BancoDados\AulaSports.st used to create database with blocksize 4096. 
+[2023/05/24@08:10:42.511-0300] P-20160      T-21692 I DBUTIL   : (334)   prostrct create session end. 
+[2023/05/24@08:10:42.525-0300] P-20160      T-21692 I DBUTIL   : (451)   procopy session begin for User on CON:. 
+[2023/05/24@08:10:42.737-0300] P-20160      T-21692 I DBUTIL   : (334)   procopy session end. 
+
+                Wed May 24 08:10:42 2023
+[2023/05/24@08:10:42.781-0300] P-20160      T-21692 I DBUTIL   : (451)   procopy get default SQL DBA session begin for User on CON:. 
+[2023/05/24@08:10:42.782-0300] P-20160      T-21692 I DBUTIL   : (15321) Before Image Log Initialization at block 0  offset 0. 
+[2023/05/24@08:10:42.993-0300] P-20160      T-21692 I DBUTIL   : (14867) Procopy -newinstance Created a new database GUID. 
+[2023/05/24@08:10:43.004-0300] P-20160      T-21692 I DBUTIL   : (15109) At Database close the number of live transactions is 0. 
+[2023/05/24@08:10:43.005-0300] P-20160      T-21692 I DBUTIL   : (15743) Before Image Log Completion at Block 0 Offset 3690. 
+[2023/05/24@08:10:43.007-0300] P-20160      T-21692 I DBUTIL   : (334)   procopy get default SQL DBA session end. 
+
+                Wed May 24 08:11:22 2023
+[2023/05/24@08:11:22.112-0300] P-9920       T-5984  I ABL      : (451)   Single-user session begin for User on CON:. 
+[2023/05/24@08:11:22.113-0300] P-9920       T-5984  I ABL      : (15321) Before Image Log Initialization at block 0  offset 3690. 
+[2023/05/24@08:11:22.129-0300] P-9920       T-5984  I ABL      : (7129)  Usr 0 set name to User. 
+
+                Wed May 31 08:01:43 2023
+[2023/05/31@08:01:43.977-0300] P-7948       T-6948  I ABL      : (451)   Single-user session begin for User on CON:. 
+[2023/05/31@08:01:43.983-0300] P-7948       T-6948  I ABL      : (5326)  Begin Physical Redo Phase at 0 . 
+[2023/05/31@08:01:43.987-0300] P-7948       T-6948  I ABL      : (7161)  Physical Redo Phase Completed at blk 0 off 3742 upd 0. 
+[2023/05/31@08:01:43.987-0300] P-7948       T-6948  I ABL      : (13547) At end of Physical redo, transaction table size is 4096. 
+[2023/05/31@08:01:44.038-0300] P-7948       T-6948  I ABL      : (7129)  Usr 0 set name to User. 
+
+                Thu Jun  1 10:17:39 2023
+[2023/06/01@10:17:39.627-0300] P-7948       T-6948  I ABL      : (15109) At Database close the number of live transactions is 0. 
+[2023/06/01@10:17:39.628-0300] P-7948       T-6948  I ABL      : (15743) Before Image Log Completion at Block 0 Offset 3794. 
+[2023/06/01@10:17:39.635-0300] P-7948       T-6948  I ABL      : (334)   Single-user session end. 
+
+                Tue Jun  6 16:07:05 2023
+[2023/06/06@16:07:06.000-0300] P-16932      T-14816 I ABL      : (451)   Single-user session begin for User on CON:. 
+[2023/06/06@16:07:06.002-0300] P-16932      T-14816 I ABL      : (15321) Before Image Log Initialization at block 0  offset 3794. 
+[2023/06/06@16:07:06.065-0300] P-16932      T-14816 I ABL      : (7129)  Usr 0 set name to User. 
