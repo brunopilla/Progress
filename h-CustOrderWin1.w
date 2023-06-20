@@ -91,7 +91,7 @@ Customer.Name Customer.Address Customer.State Customer.City
 Customer.Address Customer.State Customer.City 
 &Scoped-define ENABLED-TABLES Customer
 &Scoped-define FIRST-ENABLED-TABLE Customer
-&Scoped-Define ENABLED-OBJECTS btnFirst OrderBrowse 
+&Scoped-Define ENABLED-OBJECTS btnNext btnPrev btnLast btnFirst OrderBrowse 
 &Scoped-Define DISPLAYED-FIELDS Customer.CustNum Customer.Name ~
 Customer.Address Customer.State Customer.City 
 &Scoped-define DISPLAYED-TABLES Customer
@@ -114,7 +114,19 @@ DEFINE VAR CustWin AS WIDGET-HANDLE NO-UNDO.
 /* Definitions of the field level widgets                               */
 DEFINE BUTTON btnFirst 
      LABEL "Primeiro" 
-     SIZE 15 BY 1.13.
+     SIZE 15 BY 1.14.
+
+DEFINE BUTTON btnLast 
+     LABEL "Último" 
+     SIZE 15 BY 1.14.
+
+DEFINE BUTTON btnNext 
+     LABEL "Próximo" 
+     SIZE 15 BY 1.14.
+
+DEFINE BUTTON btnPrev 
+     LABEL "Anterior" 
+     SIZE 15 BY 1.14.
 
 /* Query definitions                                                    */
 &ANALYZE-SUSPEND
@@ -130,43 +142,46 @@ DEFINE BROWSE OrderBrowse
 &ANALYZE-SUSPEND _UIB-CODE-BLOCK _DISPLAY-FIELDS OrderBrowse CustWin _STRUCTURED
   QUERY OrderBrowse NO-LOCK DISPLAY
       Order.Ordernum COLUMN-LABEL "N§ Pedido" FORMAT "zzzzzzzzz9":U
-            WIDTH 14.43
+            WIDTH 14.4
       Order.OrderDate COLUMN-LABEL "Data Pedido" FORMAT "99/99/99":U
-            WIDTH 13.43
+            WIDTH 13.4
       Order.PromiseDate COLUMN-LABEL "Prev. Entrega" FORMAT "99/99/99":U
-            WIDTH 15.43
+            WIDTH 15.4
       Order.ShipDate COLUMN-LABEL "Data Entrega" FORMAT "99/99/9999":U
-            WIDTH 14.43
-      Order.PO FORMAT "x(20)":U
+            WIDTH 14.4
+      Order.PO FORMAT "x(20)":U WIDTH 11.2
 /* _UIB-CODE-BLOCK-END */
 &ANALYZE-RESUME
-    WITH NO-ROW-MARKERS SEPARATORS SIZE 74 BY 7 FIT-LAST-COLUMN.
+    WITH NO-ROW-MARKERS SEPARATORS SIZE 76.6 BY 7.43 ROW-HEIGHT-CHARS .52 FIT-LAST-COLUMN.
 
 
 /* ************************  Frame Definitions  *********************** */
 
 DEFINE FRAME CustQuerry
-     btnFirst AT ROW 2.25 COL 2 WIDGET-ID 14
-     Customer.CustNum AT ROW 4.5 COL 11.29 COLON-ALIGNED WIDGET-ID 6
+     btnNext AT ROW 1.38 COL 22.4 WIDGET-ID 16
+     btnPrev AT ROW 1.38 COL 41.8 WIDGET-ID 20
+     btnLast AT ROW 1.38 COL 61 WIDGET-ID 22
+     btnFirst AT ROW 1.43 COL 3 WIDGET-ID 14
+     Customer.CustNum AT ROW 3.71 COL 12.2 COLON-ALIGNED WIDGET-ID 6
           VIEW-AS FILL-IN 
-          SIZE 6.86 BY 1
-     Customer.Name AT ROW 4.5 COL 41 COLON-ALIGNED WIDGET-ID 8
+          SIZE 6.8 BY 1
+     Customer.Name AT ROW 3.71 COL 42 COLON-ALIGNED WIDGET-ID 8
           VIEW-AS FILL-IN 
-          SIZE 31.14 BY 1
-     Customer.Address AT ROW 6.42 COL 11 COLON-ALIGNED WIDGET-ID 2
+          SIZE 31.2 BY 1
+     Customer.Address AT ROW 5.62 COL 12 COLON-ALIGNED WIDGET-ID 2
           VIEW-AS FILL-IN 
-          SIZE 61.14 BY 1
-     Customer.State AT ROW 8.33 COL 51 COLON-ALIGNED WIDGET-ID 10
+          SIZE 61.2 BY 1
+     Customer.State AT ROW 7.52 COL 52 COLON-ALIGNED WIDGET-ID 10
           VIEW-AS FILL-IN 
-          SIZE 21.14 BY 1
-     Customer.City AT ROW 8.42 COL 11.14 COLON-ALIGNED WIDGET-ID 4
+          SIZE 21.2 BY 1
+     Customer.City AT ROW 7.62 COL 12.2 COLON-ALIGNED WIDGET-ID 4
           VIEW-AS FILL-IN 
-          SIZE 26.14 BY 1
-     OrderBrowse AT ROW 10.75 COL 3 WIDGET-ID 200
+          SIZE 26.2 BY 1
+     OrderBrowse AT ROW 9.52 COL 2.4 WIDGET-ID 200
     WITH 1 DOWN NO-BOX KEEP-TAB-ORDER OVERLAY 
          SIDE-LABELS NO-UNDERLINE THREE-D 
          AT COL 1 ROW 1
-         SIZE 82.86 BY 18.08 WIDGET-ID 100.
+         SIZE 79 BY 16.38 WIDGET-ID 100.
 
 
 /* *********************** Procedure Settings ************************ */
@@ -186,12 +201,12 @@ IF SESSION:DISPLAY-TYPE = "GUI":U THEN
   CREATE WINDOW CustWin ASSIGN
          HIDDEN             = YES
          TITLE              = "Clientes e Pedidos"
-         HEIGHT             = 18.08
-         WIDTH              = 82.86
-         MAX-HEIGHT         = 42.25
-         MAX-WIDTH          = 274.29
-         VIRTUAL-HEIGHT     = 42.25
-         VIRTUAL-WIDTH      = 274.29
+         HEIGHT             = 16.38
+         WIDTH              = 79
+         MAX-HEIGHT         = 42.24
+         MAX-WIDTH          = 274.2
+         VIRTUAL-HEIGHT     = 42.24
+         VIRTUAL-WIDTH      = 274.2
          RESIZE             = yes
          SCROLL-BARS        = no
          STATUS-AREA        = no
@@ -238,14 +253,15 @@ THEN CustWin:HIDDEN = no.
      _TblList          = "test.Order OF test.Customer"
      _Options          = "NO-LOCK INDEXED-REPOSITION"
      _FldNameList[1]   > test.Order.Ordernum
-"Order.Ordernum" "N§ Pedido" ? "integer" ? ? ? ? ? ? no ? no no "14.43" yes no no "U" "" "" "" "" "" "" 0 no 0 no no
+"Order.Ordernum" "N§ Pedido" ? "integer" ? ? ? ? ? ? no ? no no "14.4" yes no no "U" "" "" "" "" "" "" 0 no 0 no no
      _FldNameList[2]   > test.Order.OrderDate
-"Order.OrderDate" "Data Pedido" ? "date" ? ? ? ? ? ? no ? no no "13.43" yes no no "U" "" "" "" "" "" "" 0 no 0 no no
+"Order.OrderDate" "Data Pedido" ? "date" ? ? ? ? ? ? no ? no no "13.4" yes no no "U" "" "" "" "" "" "" 0 no 0 no no
      _FldNameList[3]   > test.Order.PromiseDate
-"Order.PromiseDate" "Prev. Entrega" ? "date" ? ? ? ? ? ? no ? no no "15.43" yes no no "U" "" "" "" "" "" "" 0 no 0 no no
+"Order.PromiseDate" "Prev. Entrega" ? "date" ? ? ? ? ? ? no ? no no "15.4" yes no no "U" "" "" "" "" "" "" 0 no 0 no no
      _FldNameList[4]   > test.Order.ShipDate
-"Order.ShipDate" "Data Entrega" ? "date" ? ? ? ? ? ? no ? no no "14.43" yes no no "U" "" "" "" "" "" "" 0 no 0 no no
-     _FldNameList[5]   = test.Order.PO
+"Order.ShipDate" "Data Entrega" ? "date" ? ? ? ? ? ? no ? no no "14.4" yes no no "U" "" "" "" "" "" "" 0 no 0 no no
+     _FldNameList[5]   > test.Order.PO
+"Order.PO" ? ? "character" ? ? ? ? ? ? no ? no no "11.2" yes no no "U" "" "" "" "" "" "" 0 no 0 no no
      _Query            is OPENED
 */  /* BROWSE OrderBrowse */
 &ANALYZE-RESUME
@@ -287,6 +303,54 @@ END.
 ON CHOOSE OF btnFirst IN FRAME CustQuerry /* Primeiro */
 DO:
   GET FIRST CustQuerry.
+  IF AVAILABLE Customer THEN 
+    DISPLAY Customer.CustNum Customer.Name Customer.Address Customer.State 
+          Customer.City 
+      WITH FRAME CustQuerry IN WINDOW CustWin.
+  {&OPEN-BROWSERS-IN-QUERY-CustQuery}
+END.
+
+/* _UIB-CODE-BLOCK-END */
+&ANALYZE-RESUME
+
+
+&Scoped-define SELF-NAME btnLast
+&ANALYZE-SUSPEND _UIB-CODE-BLOCK _CONTROL btnLast CustWin
+ON CHOOSE OF btnLast IN FRAME CustQuerry /* Último */
+DO:
+  GET LAST CustQuerry.
+  IF AVAILABLE Customer THEN 
+    DISPLAY Customer.CustNum Customer.Name Customer.Address Customer.State 
+          Customer.City 
+      WITH FRAME CustQuerry IN WINDOW CustWin.
+  {&OPEN-BROWSERS-IN-QUERY-CustQuery}
+END.
+
+/* _UIB-CODE-BLOCK-END */
+&ANALYZE-RESUME
+
+
+&Scoped-define SELF-NAME btnNext
+&ANALYZE-SUSPEND _UIB-CODE-BLOCK _CONTROL btnNext CustWin
+ON CHOOSE OF btnNext IN FRAME CustQuerry /* Próximo */
+DO:
+  GET NEXT CustQuerry.
+  IF AVAILABLE Customer THEN 
+    DISPLAY Customer.CustNum Customer.Name Customer.Address Customer.State 
+          Customer.City 
+      WITH FRAME CustQuerry IN WINDOW CustWin.
+  {&OPEN-BROWSERS-IN-QUERY-CustQuery}
+END.
+
+/* _UIB-CODE-BLOCK-END */
+&ANALYZE-RESUME
+
+
+&Scoped-define SELF-NAME btnPrev
+&ANALYZE-SUSPEND _UIB-CODE-BLOCK _CONTROL btnPrev CustWin
+ON CHOOSE OF btnPrev IN FRAME CustQuerry /* Anterior */
+DO:
+  GET PREV CustQuerry.
   IF AVAILABLE Customer THEN 
     DISPLAY Customer.CustNum Customer.Name Customer.Address Customer.State 
           Customer.City 
@@ -371,8 +435,8 @@ PROCEDURE enable_UI :
     DISPLAY Customer.CustNum Customer.Name Customer.Address Customer.State 
           Customer.City 
       WITH FRAME CustQuerry IN WINDOW CustWin.
-  ENABLE btnFirst Customer.CustNum Customer.Name Customer.Address 
-         Customer.State Customer.City OrderBrowse 
+  ENABLE btnNext btnPrev btnLast btnFirst Customer.CustNum Customer.Name 
+         Customer.Address Customer.State Customer.City OrderBrowse 
       WITH FRAME CustQuerry IN WINDOW CustWin.
   {&OPEN-BROWSERS-IN-QUERY-CustQuerry}
   VIEW CustWin.
