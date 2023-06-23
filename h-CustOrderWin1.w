@@ -51,7 +51,7 @@ CREATE WIDGET-POOL.
 &Scoped-define DB-AWARE no
 
 /* Name of designated FRAME-NAME and/or first browse and/or first query */
-&Scoped-define FRAME-NAME CustQuerry
+&Scoped-define FRAME-NAME CustQuery
 &Scoped-define BROWSE-NAME OrderBrowse
 
 /* Internal Tables (found by Frame, Query & Browse Queries)             */
@@ -67,23 +67,23 @@ Order.PromiseDate Order.ShipDate Order.PO
 &Scoped-define FIRST-TABLE-IN-QUERY-OrderBrowse Order
 
 
-/* Definitions for FRAME CustQuerry                                     */
-&Scoped-define FIELDS-IN-QUERY-CustQuerry Customer.CustNum Customer.Name ~
+/* Definitions for FRAME CustQuery                                      */
+&Scoped-define FIELDS-IN-QUERY-CustQuery Customer.CustNum Customer.Name ~
 Customer.Address Customer.State Customer.City 
-&Scoped-define ENABLED-FIELDS-IN-QUERY-CustQuerry Customer.CustNum ~
+&Scoped-define ENABLED-FIELDS-IN-QUERY-CustQuery Customer.CustNum ~
 Customer.Name Customer.Address Customer.State Customer.City 
-&Scoped-define ENABLED-TABLES-IN-QUERY-CustQuerry Customer
-&Scoped-define FIRST-ENABLED-TABLE-IN-QUERY-CustQuerry Customer
-&Scoped-define OPEN-BROWSERS-IN-QUERY-CustQuerry ~
+&Scoped-define ENABLED-TABLES-IN-QUERY-CustQuery Customer
+&Scoped-define FIRST-ENABLED-TABLE-IN-QUERY-CustQuery Customer
+&Scoped-define OPEN-BROWSERS-IN-QUERY-CustQuery ~
     ~{&OPEN-QUERY-OrderBrowse}
-&Scoped-define QUERY-STRING-CustQuerry FOR EACH Customer ~
+&Scoped-define QUERY-STRING-CustQuery FOR EACH Customer ~
       WHERE Customer.State = "NH" SHARE-LOCK ~
     BY Customer.City
-&Scoped-define OPEN-QUERY-CustQuerry OPEN QUERY CustQuerry FOR EACH Customer ~
+&Scoped-define OPEN-QUERY-CustQuery OPEN QUERY CustQuery FOR EACH Customer ~
       WHERE Customer.State = "NH" SHARE-LOCK ~
     BY Customer.City.
-&Scoped-define TABLES-IN-QUERY-CustQuerry Customer
-&Scoped-define FIRST-TABLE-IN-QUERY-CustQuerry Customer
+&Scoped-define TABLES-IN-QUERY-CustQuery Customer
+&Scoped-define FIRST-TABLE-IN-QUERY-CustQuery Customer
 
 
 /* Standard List Definitions                                            */
@@ -133,7 +133,7 @@ DEFINE BUTTON btnPrev
 DEFINE QUERY OrderBrowse FOR 
       Order SCROLLING.
 
-DEFINE QUERY CustQuerry FOR 
+DEFINE QUERY CustQuery FOR 
       Customer SCROLLING.
 &ANALYZE-RESUME
 
@@ -149,7 +149,7 @@ DEFINE BROWSE OrderBrowse
             WIDTH 15.4
       Order.ShipDate COLUMN-LABEL "Data Entrega" FORMAT "99/99/9999":U
             WIDTH 14.4
-      Order.PO FORMAT "x(20)":U WIDTH 11.2
+      Order.PO FORMAT "x(20)":U
 /* _UIB-CODE-BLOCK-END */
 &ANALYZE-RESUME
     WITH NO-ROW-MARKERS SEPARATORS SIZE 76.6 BY 7.43 ROW-HEIGHT-CHARS .52 FIT-LAST-COLUMN.
@@ -157,7 +157,7 @@ DEFINE BROWSE OrderBrowse
 
 /* ************************  Frame Definitions  *********************** */
 
-DEFINE FRAME CustQuerry
+DEFINE FRAME CustQuery
      btnNext AT ROW 1.38 COL 22.4 WIDGET-ID 16
      btnPrev AT ROW 1.38 COL 41.8 WIDGET-ID 20
      btnLast AT ROW 1.38 COL 61 WIDGET-ID 22
@@ -227,9 +227,9 @@ ELSE {&WINDOW-NAME} = CURRENT-WINDOW.
 &ANALYZE-SUSPEND _RUN-TIME-ATTRIBUTES
 /* SETTINGS FOR WINDOW CustWin
   VISIBLE,,RUN-PERSISTENT                                               */
-/* SETTINGS FOR FRAME CustQuerry
+/* SETTINGS FOR FRAME CustQuery
    FRAME-NAME                                                           */
-/* BROWSE-TAB OrderBrowse City CustQuerry */
+/* BROWSE-TAB OrderBrowse City CustQuery */
 IF SESSION:DISPLAY-TYPE = "GUI":U AND VALID-HANDLE(CustWin)
 THEN CustWin:HIDDEN = no.
 
@@ -239,13 +239,13 @@ THEN CustWin:HIDDEN = no.
 
 /* Setting information for Queries and Browse Widgets fields            */
 
-&ANALYZE-SUSPEND _QUERY-BLOCK FRAME CustQuerry
-/* Query rebuild information for FRAME CustQuerry
+&ANALYZE-SUSPEND _QUERY-BLOCK FRAME CustQuery
+/* Query rebuild information for FRAME CustQuery
      _TblList          = "test.Customer"
      _OrdList          = "test.Customer.City|yes"
-     _Where[1]         = "test.Customer.State = ""NH"""
+     _Where[1]         = "Customer.State = ""NH"""
      _Query            is OPENED
-*/  /* FRAME CustQuerry */
+*/  /* FRAME CustQuery */
 &ANALYZE-RESUME
 
 &ANALYZE-SUSPEND _QUERY-BLOCK BROWSE OrderBrowse
@@ -260,8 +260,7 @@ THEN CustWin:HIDDEN = no.
 "Order.PromiseDate" "Prev. Entrega" ? "date" ? ? ? ? ? ? no ? no no "15.4" yes no no "U" "" "" "" "" "" "" 0 no 0 no no
      _FldNameList[4]   > test.Order.ShipDate
 "Order.ShipDate" "Data Entrega" ? "date" ? ? ? ? ? ? no ? no no "14.4" yes no no "U" "" "" "" "" "" "" 0 no 0 no no
-     _FldNameList[5]   > test.Order.PO
-"Order.PO" ? ? "character" ? ? ? ? ? ? no ? no no "11.2" yes no no "U" "" "" "" "" "" "" 0 no 0 no no
+     _FldNameList[5]   = test.Order.PO
      _Query            is OPENED
 */  /* BROWSE OrderBrowse */
 &ANALYZE-RESUME
@@ -300,13 +299,13 @@ END.
 
 &Scoped-define SELF-NAME btnFirst
 &ANALYZE-SUSPEND _UIB-CODE-BLOCK _CONTROL btnFirst CustWin
-ON CHOOSE OF btnFirst IN FRAME CustQuerry /* Primeiro */
+ON CHOOSE OF btnFirst IN FRAME CustQuery /* Primeiro */
 DO:
-  GET FIRST CustQuerry.
+  GET FIRST CustQuery.
   IF AVAILABLE Customer THEN 
     DISPLAY Customer.CustNum Customer.Name Customer.Address Customer.State 
           Customer.City 
-      WITH FRAME CustQuerry IN WINDOW CustWin.
+      WITH FRAME CustQuery IN WINDOW CustWin.
   {&OPEN-BROWSERS-IN-QUERY-CustQuery}
 END.
 
@@ -316,13 +315,13 @@ END.
 
 &Scoped-define SELF-NAME btnLast
 &ANALYZE-SUSPEND _UIB-CODE-BLOCK _CONTROL btnLast CustWin
-ON CHOOSE OF btnLast IN FRAME CustQuerry /* Último */
+ON CHOOSE OF btnLast IN FRAME CustQuery /* Último */
 DO:
-  GET LAST CustQuerry.
+  GET LAST CustQuery.
   IF AVAILABLE Customer THEN 
     DISPLAY Customer.CustNum Customer.Name Customer.Address Customer.State 
           Customer.City 
-      WITH FRAME CustQuerry IN WINDOW CustWin.
+      WITH FRAME CustQuery IN WINDOW CustWin.
   {&OPEN-BROWSERS-IN-QUERY-CustQuery}
 END.
 
@@ -332,14 +331,15 @@ END.
 
 &Scoped-define SELF-NAME btnNext
 &ANALYZE-SUSPEND _UIB-CODE-BLOCK _CONTROL btnNext CustWin
-ON CHOOSE OF btnNext IN FRAME CustQuerry /* Próximo */
+ON CHOOSE OF btnNext IN FRAME CustQuery /* Próximo */
 DO:
-  GET NEXT CustQuerry.
-  IF AVAILABLE Customer THEN 
+  GET NEXT CustQuery.
+  IF AVAILABLE Customer THEN
+  DO /* WITH FRAME CustQuery */:
     DISPLAY Customer.CustNum Customer.Name Customer.Address Customer.State 
-          Customer.City 
-      WITH FRAME CustQuerry IN WINDOW CustWin.
-  {&OPEN-BROWSERS-IN-QUERY-CustQuery}
+        Customer.City.
+        {&OPEN-BROWSERS-IN-QUERY-CustQuery}
+  END.
 END.
 
 /* _UIB-CODE-BLOCK-END */
@@ -348,14 +348,16 @@ END.
 
 &Scoped-define SELF-NAME btnPrev
 &ANALYZE-SUSPEND _UIB-CODE-BLOCK _CONTROL btnPrev CustWin
-ON CHOOSE OF btnPrev IN FRAME CustQuerry /* Anterior */
+ON CHOOSE OF btnPrev IN FRAME CustQuery /* Anterior */
 DO:
-  GET PREV CustQuerry.
-  IF AVAILABLE Customer THEN 
+  GET PREV CustQuery.
+  IF AVAILABLE Customer THEN
+  DO:
     DISPLAY Customer.CustNum Customer.Name Customer.Address Customer.State 
-          Customer.City 
-      WITH FRAME CustQuerry IN WINDOW CustWin.
-  {&OPEN-BROWSERS-IN-QUERY-CustQuery}
+    Customer.City 
+    WITH FRAME CustQuery IN WINDOW CustWin.
+    {&OPEN-BROWSERS-IN-QUERY-CustQuery}
+  END.
 END.
 
 /* _UIB-CODE-BLOCK-END */
@@ -429,16 +431,16 @@ PROCEDURE enable_UI :
                Settings" section of the widget Property Sheets.
 ------------------------------------------------------------------------------*/
 
-  {&OPEN-QUERY-CustQuerry}
-  GET FIRST CustQuerry.
+  {&OPEN-QUERY-CustQuery}
+  GET FIRST CustQuery.
   IF AVAILABLE Customer THEN 
     DISPLAY Customer.CustNum Customer.Name Customer.Address Customer.State 
           Customer.City 
-      WITH FRAME CustQuerry IN WINDOW CustWin.
+      WITH FRAME CustQuery IN WINDOW CustWin.
   ENABLE btnNext btnPrev btnLast btnFirst Customer.CustNum Customer.Name 
          Customer.Address Customer.State Customer.City OrderBrowse 
-      WITH FRAME CustQuerry IN WINDOW CustWin.
-  {&OPEN-BROWSERS-IN-QUERY-CustQuerry}
+      WITH FRAME CustQuery IN WINDOW CustWin.
+  {&OPEN-BROWSERS-IN-QUERY-CustQuery}
   VIEW CustWin.
 END PROCEDURE.
 
